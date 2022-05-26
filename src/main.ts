@@ -27,6 +27,7 @@ export const execSyncWrapper = (
 export const $o = (cmd: TemplateStringsArray | string, ...args: any[]) => {
   return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stdout);
 };
+export const $ = $o;
 // deno-lint-ignore no-explicit-any
 export const $e = (cmd: TemplateStringsArray | string, ...args: any[]) => {
   return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stderr);
