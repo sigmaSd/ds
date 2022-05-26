@@ -12,15 +12,26 @@ const execSync = (c: string) => {
     args: cmd.slice(1),
   });
 };
-// deno-lint-ignore no-explicit-any
-export const $o = (cmd: TemplateStringsArray, ...args: any[]) => {
-  return new TextDecoder().decode(execSync(quote(cmd, ...args)).stdout);
+export const execSyncWrapper = (
+  cmd: TemplateStringsArray | string,
+  // deno-lint-ignore no-explicit-any
+  ...args: any[]
+) => {
+  if (typeof cmd === "string") {
+    return execSync(cmd);
+  } else {
+    return execSync(quote(cmd, ...args));
+  }
 };
 // deno-lint-ignore no-explicit-any
-export const $e = (cmd: TemplateStringsArray, ...args: any[]) => {
-  return new TextDecoder().decode(execSync(quote(cmd, ...args)).stderr);
+export const $o = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+  return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stdout);
 };
 // deno-lint-ignore no-explicit-any
-export const $s = (cmd: TemplateStringsArray, ...args: any[]) => {
-  return execSync(quote(cmd, ...args)).status;
+export const $e = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+  return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stderr);
+};
+// deno-lint-ignore no-explicit-any
+export const $s = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+  return execSyncWrapper(cmd, ...args).status;
 };
