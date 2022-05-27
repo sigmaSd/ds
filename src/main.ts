@@ -37,13 +37,13 @@ export const $s = (cmd: TemplateStringsArray | string, ...args: any[]) => {
   return execSyncWrapper(cmd, ...args).status;
 };
 
-export const $$ = async (
+export const $$ = (
   cmd: TemplateStringsArray,
   ...args: Array<string | number>
 ) => {
   const cmdStr = typeof (cmd) == "string" ? cmd : quote(cmd, ...args);
   const cmdArr = cmdStr.split(/\s+/);
-  return await Deno.spawnChild(cmdArr[0], {
+  return Deno.spawnSync(cmdArr[0], {
     args: cmdArr.slice(1),
     stdout: "inherit",
     stderr: "inherit",
