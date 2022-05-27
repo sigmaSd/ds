@@ -47,7 +47,7 @@ export const $s = (
 /** Run a command with stdin,stdout,stderr set as 'inherit'
  * This is useful for long-running/interactive commands */
 export const $$ = (
-  cmd: TemplateStringsArray,
+  cmd: TemplateStringsArray | string,
   ...args: Array<string | number>
 ) => {
   const cmdStr = typeof (cmd) == "string" ? cmd : quote(cmd, ...args);
