@@ -1,18 +1,15 @@
-// deno-lint-ignore no-explicit-any
-const quote = (cmd: TemplateStringsArray, ...args: any[]) => {
+const quote = (cmd: TemplateStringsArray, ...args: Array<string | number>) => {
   return cmd.reduce((acc, cur, i) => {
     return acc + cur + (args[i - 1] || "");
   }, "");
 };
-
-// takes a command as raw string and run it
 const execSync = (c: string) => {
   const cmd = c.split(/\s+/);
   return Deno.spawnSync(cmd[0], {
     args: cmd.slice(1),
   });
 };
-export const execSyncWrapper = (
+const execSyncWrapper = (
   cmd: TemplateStringsArray | string,
   // deno-lint-ignore no-explicit-any
   ...args: any[]
@@ -23,20 +20,32 @@ export const execSyncWrapper = (
     return execSync(quote(cmd, ...args));
   }
 };
-// deno-lint-ignore no-explicit-any
-export const $o = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+
+/** Run a command and return stdout decoded */
+export const $o = (
+  cmd: TemplateStringsArray | string,
+  ...args: Array<string | number>
+) => {
   return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stdout);
 };
+/** Run a command and return stdout decoded (alias to $o) */
 export const $ = $o;
-// deno-lint-ignore no-explicit-any
-export const $e = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+/** Run a command and return stderr decoded */
+export const $e = (
+  cmd: TemplateStringsArray | string,
+  ...args: Array<string | number>
+) => {
   return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stderr);
 };
-// deno-lint-ignore no-explicit-any
-export const $s = (cmd: TemplateStringsArray | string, ...args: any[]) => {
+/** Run a command and return the status */
+export const $s = (
+  cmd: TemplateStringsArray | string,
+  ...args: Array<string | number>
+) => {
   return execSyncWrapper(cmd, ...args).status;
 };
-
+/** Run a command with stdin,stdout,stderr set as 'inherit'
+ * This is useful for long-running/interactive commands */
 export const $$ = (
   cmd: TemplateStringsArray,
   ...args: Array<string | number>

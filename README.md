@@ -1,7 +1,9 @@
 # ds
+
 Deno simple shell
 
 ## Usage
+
 ```ts
 import { $, $$, $e, $o, $s } from "https://deno.land/x/simple_shell/mod.ts";
 
