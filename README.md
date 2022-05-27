@@ -11,3 +11,4 @@ const list = $("ls -l");
 const data = list.split("\n").slice(1).map((l) => l.split(/\s+/).at(-1));
 $$`file ${data[0]!}`;
 ```
+Requires `--unstable` flag
