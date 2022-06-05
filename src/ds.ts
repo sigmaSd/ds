@@ -1,6 +1,6 @@
 const quote = (cmd: TemplateStringsArray, ...args: Array<string | number>) => {
   return cmd.reduce((acc, cur, i) => {
-    return acc + cur + (args[i - 1] || "");
+    return acc + cur + (args[i] || "");
   }, "");
 };
 const execSync = (c: string) => {
