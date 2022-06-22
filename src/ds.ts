@@ -58,20 +58,28 @@ export const $t = (
   }
 };
 /** Run a command with stdin,stdout,stderr set as 'inherit'
- * This is useful for long-running/interactive commands */
+ * This is useful for long-running/interactive commands
+ *
+ * `$$` have a `throws` property, by default it is set to true.
+ * If `throws` is set to true this function will throw an error if the command exists with a non-zero code
+ */
 export const $$ = (
   cmd: TemplateStringsArray | string,
   ...args: Array<string | number>
 ) => {
   const cmdStr = typeof (cmd) == "string" ? cmd : quote(cmd, ...args);
   const cmdArr = cmdStr.split(/\s+/);
-  return Deno.spawnSync(cmdArr[0], {
+  const status = Deno.spawnSync(cmdArr[0], {
     args: cmdArr.slice(1),
     stdout: "inherit",
     stderr: "inherit",
     stdin: "inherit",
   }).status;
+  if ($$.throws && !status.success) {
+    throw (`'${cmd} ${args}' exited with non-zero code.`);
+  }
 };
+$$.throws = false;
 
 /** Run a command with a specified shell
  *
