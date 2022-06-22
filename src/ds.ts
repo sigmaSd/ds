@@ -87,12 +87,15 @@ $$.throws = false;
  *
  * Quoting currently relies on splitting by white-space and doesn't handle quoted arguments correctly
  *
- * `simpleRun` uses the first argument as the command and does no further splitting, example: sh -c echo "hello world" becomes cmd: sh and args: ['-c echo "hello world"']
- *
- Hopefully this can be fixed in the future but for now `simpleRun` can be used as an escape hatch */
-export const simpleRun = (c: string) => {
-  const cmd = c.split(/\s+/, 1);
-  Deno.spawnSync(cmd[0], {
-    args: cmd.slice(1),
+ Hopefully this can be fixed in the future but for now `shellRun` can be used as an escape hatch */
+export const shellRun = (
+  { shell, shellExecFlag, cmd }: {
+    shell: string;
+    shellExecFlag: string;
+    cmd: string;
+  },
+) => {
+  return Deno.spawnSync(shell, {
+    args: [shellExecFlag, cmd],
   });
 };
