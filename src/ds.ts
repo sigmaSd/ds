@@ -42,7 +42,7 @@ export const $s = (
   cmd: TemplateStringsArray | string,
   ...args: Array<string | number>
 ) => {
-  return execSyncWrapper(cmd, ...args).status;
+  return execSyncWrapper(cmd, ...args).success;
 };
 /** Run a command and throw an error if it exists with a non-zero code. */
 export const $t = (
@@ -50,7 +50,7 @@ export const $t = (
   ...args: Array<string | number>
 ) => {
   const result = execSyncWrapper(cmd, ...args);
-  if (!result.status.success) {
+  if (!result.success) {
     console.error(
       new TextDecoder().decode(execSyncWrapper(cmd, ...args).stderr),
     );
@@ -69,13 +69,13 @@ export const $$ = (
 ) => {
   const cmdStr = typeof (cmd) == "string" ? cmd : quote(cmd, ...args);
   const cmdArr = cmdStr.split(/\s+/);
-  const status = Deno.spawnSync(cmdArr[0], {
+  const success = Deno.spawnSync(cmdArr[0], {
     args: cmdArr.slice(1),
     stdout: "inherit",
     stderr: "inherit",
     stdin: "inherit",
-  }).status;
-  if ($$.throws && !status.success) {
+  }).success;
+  if ($$.throws && !success) {
     throw (`'${cmd} ${args}' exited with non-zero code.`);
   }
 };
