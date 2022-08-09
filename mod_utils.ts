@@ -1,3 +1,3 @@
-import {} from "./src/stringUtils.ts";
-import {} from "./src/arrayUtils.ts";
-import {} from "./src/fnUtils.ts";
+import {} from "./src/utils/string.ts";
+import {} from "./src/utils/array.ts";
+import {} from "./src/utils/pipe.ts";
