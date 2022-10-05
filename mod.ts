@@ -1,1 +1,1 @@
-export { $, $$, $e, $o, $s, $t, shellRun } from "./src/ds.ts";
+export { $, $$,$$o, $e, $o, $s, $t, shellRun } from "./src/ds.ts";

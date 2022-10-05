@@ -13,6 +13,22 @@ const quote = (cmd: TemplateStringsArray, ...args: Array<string | number>) => {
 
   return r;
 };
+const exec = (c: string) => {
+  const cmd = c.split(/\s+/);
+  return Deno.spawn(cmd[0], {
+    args: cmd.slice(1),
+  });
+};
+const execWrapper = (
+  cmd: TemplateStringsArray | string,
+  // deno-lint-ignore no-explicit-any
+  ...args: any[]
+) => {
+  if (typeof cmd === "string") {
+    return exec(cmd);
+  } else {
+    return exec(quote(cmd, ...args));
+  }
 };
 const execSync = (c: string) => {
   const cmd = c.split(/\s+/);
@@ -39,6 +55,16 @@ export const $o = (
 ) => {
   return new TextDecoder().decode(execSyncWrapper(cmd, ...args).stdout);
 };
+
+export const $$o = async (
+  cmd: TemplateStringsArray | string,
+  ...args: Array<string | number>
+) => {
+  const r = await execWrapper(cmd, ...args);
+  const out = r.stdout;
+  return new TextDecoder().decode(out);
+};
+
 /** Run a command and return stdout decoded (alias to $o) */
 export const $ = $o;
 /** Run a command and return stderr decoded */
