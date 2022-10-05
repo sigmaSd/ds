@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.130.0/testing/asserts.ts";
-import { } from "./array.ts"
+import {} from "./array.ts";
 
 Deno.test("parallelMap", async () => {
   assertEquals(
