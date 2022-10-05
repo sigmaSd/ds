@@ -15,9 +15,8 @@ Array.prototype.parallelMap = async function <T, U>(
   thisArg?: any,
 ): Promise<U[]> {
   const promises = [];
-  const target = thisArg !== undefined ? thisArg : this;
-  for (let i = 0; i < target.length; i++) {
-    promises.push(callbackfn(target[i], i, target));
+  for (let i = 0; i < this.length; i++) {
+    promises.push(callbackfn.call(thisArg, this[i], i, this));
   }
   return await Promise.all(promises);
 };
