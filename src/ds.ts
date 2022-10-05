@@ -1,7 +1,18 @@
 const quote = (cmd: TemplateStringsArray, ...args: Array<string | number>) => {
-  return cmd.reduce((acc, cur, i) => {
-    return acc + cur + (args[i] || "");
+  const addQuoteIfHasSpace = (arg: string | number) => {
+    if (typeof arg == "number") {
+      return arg;
+    }
+
+    return arg.includes(" ") ? `"${arg}"` : arg;
+  };
+
+  const r = cmd.reduce((acc, cur, i) => {
+    return acc + cur + (args[i] ? addQuoteIfHasSpace(args[i]) : "");
   }, "");
+
+  return r;
+};
 };
 const execSync = (c: string) => {
   const cmd = c.split(/\s+/);
